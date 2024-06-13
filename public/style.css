@@ -1,0 +1,16 @@
+.posts-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.btn {
+  border-radius: 0;
+  font-size: 0.9em;
+}
+
+.post-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

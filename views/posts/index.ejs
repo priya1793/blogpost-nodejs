@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>Blog Post</title>
+  </head>
+  <body>
+    <%- include("_navbar") %>
+
+    <div class="container">
+      <h2 class="my-4">All Posts</h2>
+
+      <div class="posts-list">
+        <% posts.forEach(post => { %>
+        <div class="card mt-4" style="width: 18rem">
+          <div class="card-body">
+            <h4 class="card-title"><%= post.title %></h4>
+            <div class="card-subtitle text-muted mb-2">
+              <%= post.createdAt.toLocaleDateString() %>
+            </div>
+
+            <div class="card-text mb-2"><%= post.description %></div>
+
+            <a
+              href="posts/<%= post.slug %>"
+              class="btn btn-primary read-more-link"
+              >Read more</a
+            >
+            <a href="posts/edit/<%= post.id %>" class="btn btn-info edit-btn"
+              >Edit post</a
+            >
+
+            <form
+              action="/posts/<%= post.id %>?_method=DELETE"
+              method="POST"
+              class="d-inline"
+            >
+              <button type="submit" class="btn btn-danger mt-2">
+                Delete post
+              </button>
+            </form>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </body>
+</html>
