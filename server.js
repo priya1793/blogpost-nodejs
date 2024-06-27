@@ -1,40 +1,36 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const methodOverride = require("method-override");
+const cookieParser = require("cookie-parser");
 const path = require("path");
+
 const postRouter = require("./routes/post");
+const userRouter = require("./routes/user");
 const Post = require("./models/post");
+const { checkForAuthenticationCookie } = require("./middleware/auth");
 
 const app = express();
 dotenv.config();
+const PORT = process.env.PORT || 8000;
 
-const connect = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO);
-    console.log("connected to mongodb");
-  } catch (error) {
-    throw error;
-  }
-};
-
-mongoose.connection.on("disconnected", () => {
-  console.log("mongoDb disconnected");
-});
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => console.log("Connected to MongoDB"));
 
 app.set("view engine", "ejs");
-app.use(express.static(path.join(__dirname, "public")));
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride("_method"));
+app.set("views", path.resolve("./views"));
+
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(checkForAuthenticationCookie("token"));
+app.use(express.static(path.resolve("./public")));
 
 app.get("/", async (req, res) => {
-  const posts = await Post.find().sort({ createdAt: "desc" });
-  res.render("posts/index", { posts: posts });
+  const allPosts = await Post.find({});
+  res.render("home", { user: req.user, posts: allPosts });
 });
 
-app.use("/posts", postRouter);
+app.use("/post", postRouter);
+app.use("/user", userRouter);
 
-app.listen(5000, () => {
-  connect();
-  console.timeLog("Connected to backend");
-});
+app.listen(PORT, () => console.log(`Server is running at port ${PORT}`));

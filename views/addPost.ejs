@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head') %>
+    <title>Add New Post</title>
+  </head>
+  <body>
+    <%- include('./partials/nav') %>
+
+    <div class="container mt-3">
+      <form action="/post" method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="postImageUrl" class="form-label">Post Image</label>
+          <input
+            type="file"
+            class="form-control"
+            id="postImageUrl"
+            name="postImageUrl"
+            aria-describedby="postImageUrl"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            name="title"
+            aria-describedby="title"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="description">Description</label>
+          <textarea
+            name="description"
+            class="form-control"
+            id="description"
+          ></textarea>
+        </div>
+        <div class="mb-3">
+          <button class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <%- include('./partials/scripts') %>
+  </body>
+</html>
